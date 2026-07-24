@@ -1,0 +1,12 @@
+# Ensure scripts that run inside Linux containers always keep LF line endings,
+# regardless of the OS or git config of whoever checks the repo out.
+*.sh text eol=lf
+wait-for-it.sh text eol=lf
+
+# Keep source and config consistent too
+*.py text eol=lf
+*.proto text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
