@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: payment-service
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+      - name: payment-service
+        image: dodriscoll4/payment-service:latest
+        ports:
+        - containerPort: 50056
+        env:
+        - name: RUNNING_IN_DOCKER
+          value: "true"

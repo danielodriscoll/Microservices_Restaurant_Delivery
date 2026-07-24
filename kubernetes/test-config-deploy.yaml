@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-config-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-config
+  template:
+    metadata:
+      labels:
+        app: test-config
+    spec:
+      containers:
+      - name: test-config
+        image: alpine:latest
+        command: ["sh", "-c", "while true; do sleep 3600; done"]
+        env:
+        - name: DEBUG_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-settings
+              key: DEBUG_MODE
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-settings
+              key: LOG_LEVEL

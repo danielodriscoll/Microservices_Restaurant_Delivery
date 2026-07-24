@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-bonus-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi-bonus
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: fastapi-bonus
+    spec:
+      containers:
+      - name: fastapi-bonus
+        image: dodriscoll4/fastapi-bonus:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: RUNNING_IN_DOCKER
+          value: "true"

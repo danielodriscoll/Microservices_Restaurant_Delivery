@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package order;
+
+service OrderService {
+    rpc MakeOrder(MakeOrderRequest) returns (MakeOrderResponse);
+    rpc UpdatedOrderStatus(UpdatedOrderRequest) returns (UpdatedOrderResponse);
+    rpc GetOrderStatus(GetOrderStatusRequest) returns (GetOrderStatusResponse); 
+    rpc CheckOrderIsPresent(CheckOrderIsPresentRequest) returns (CheckOrderIsPresentResponse);
+}
+
+message MakeOrderRequest {
+    string buyer_id = 1;
+    string vendor_id = 2;
+    repeated OrderedItem ordered_items = 3;
+}
+
+message GetOrderStatusRequest { 
+    string tracking_order_id = 1;
+}
+
+message UpdatedOrderRequest {
+    string tracking_order_id = 1;
+    string current_status = 2;
+}
+
+message MakeOrderResponse {
+    string generated_order_id = 1;
+    string order_confirmation_status = 2;
+}
+
+message GetOrderStatusResponse { 
+    string tracking_order_id = 1;
+    string order_progress_status = 2;
+}
+
+message UpdatedOrderResponse {
+    string tracking_order_id = 1;
+    string latest_status = 2;
+}
+
+message OrderedItem {
+    string product_name = 1;
+    float product_price = 3;
+}
+
+message CheckOrderIsPresentRequest {
+    string order_id = 1;
+}
+
+message CheckOrderIsPresentResponse {
+    bool order_isPresent = 1;
+}

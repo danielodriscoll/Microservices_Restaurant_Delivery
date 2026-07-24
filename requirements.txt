@@ -1,0 +1,4 @@
+grpcio
+googleapis-common-protos
+fastapi
+uvicorn

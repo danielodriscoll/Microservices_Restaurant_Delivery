@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package payment;
+
+service PaymentService {
+    rpc ProcessPayment(ProcessPaymentRequest) returns (ProcessPaymentResponse);
+    rpc GetPaymentStatus(GetPaymentStatusRequest) returns (GetPaymentStatusResponse);
+}
+
+message ProcessPaymentRequest {
+    string payer_id = 1;
+    string associated_order_id = 2;
+    float transaction_amount = 3;
+    string selected_payment_method = 4;
+}
+
+message ProcessPaymentResponse {
+    bool payment_successful = 1;
+    string generated_transaction_id = 2;
+}
+
+message GetPaymentStatusRequest {
+    string order_id = 1;
+}
+
+message GetPaymentStatusResponse {
+    string payment_status = 1;
+    string transaction_id = 2;
+}

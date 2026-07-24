@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-service-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: restaurant-service
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: restaurant-service
+    spec:
+      containers:
+      - name: restaurant-service
+        image: dodriscoll4/restaurant-service:latest
+        ports:
+        - containerPort: 50055
+        env:
+        - name: RUNNING_IN_DOCKER
+          value: "true"

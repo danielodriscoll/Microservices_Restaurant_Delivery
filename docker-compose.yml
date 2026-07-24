@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  order_service:
+    build:
+      context: .
+      dockerfile: docker/order.Dockerfile
+    ports:
+      - "50051:50051"
+
+
+  restaurant_service:
+    build:
+      context: .
+      dockerfile: docker/restaurant.Dockerfile
+    ports:
+      - "50055:50055"
+    depends_on:
+      - order_service
+    environment:
+      - RUNNING_IN_DOCKER=true
+    command: ["./wait-for-it.sh", "order_service:50051", "--", "python", "services/restaurant_service.py"]
+
+  payment_service:
+    build:
+      context: .
+      dockerfile: docker/payment.Dockerfile
+    ports:
+      - "50056:50056"
+    depends_on:
+      - order_service
+    environment:
+      - RUNNING_IN_DOCKER=true
+    command: ["./wait-for-it.sh", "order_service:50051", "--", "python", "services/payment_service.py"]
+
+  delivery_service:
+    build:
+      context: .
+      dockerfile: docker/delivery.Dockerfile
+    ports:
+      - "50053:50053"
+    depends_on:
+      - order_service
+    environment:
+      - RUNNING_IN_DOCKER=true
+    command: ["./wait-for-it.sh", "order_service:50051", "--", "python", "services/delivery_service.py"]
+
+
+  fastapi_bonus:
+    build:
+      context: .
+      dockerfile: docker/fastapi.Dockerfile  
+    ports:
+      - "8000:8000"
+    depends_on:
+      - order_service
+      - restaurant_service
+      - payment_service
+      - delivery_service
+    environment:
+      - RUNNING_IN_DOCKER=true  
+    command: ["./wait-for-it.sh", "order_service:50051", "--", "python", "services/fastapi_bonus.py"]

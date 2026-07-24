@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package delivery;
+
+service DeliveryService {
+    rpc AssignDriver(DriverAssignmentRequest) returns (DriverAssignmentResponse);
+    rpc UpdateStatus(DeliveryStatusUpdateRequest) returns (DeliveryStatusUpdateResponse);
+    rpc GetStatus(DeliveryStatusRequest) returns (DeliveryStatusResponse);
+    rpc GetAssignedDeliveries(DriverRequest) returns (DriverDeliveriesResponse);
+}
+
+message DriverAssignmentRequest {
+    string assigned_order_id = 1;
+}
+
+message DeliveryStatusUpdateRequest {
+    string assigned_order_id = 1;
+    string delivery_status = 2; 
+}
+
+message DriverAssignmentResponse {
+    string assigned_driver_id = 1;
+    string assigned_vehicle = 2;
+}
+
+message DeliveryStatusUpdateResponse {
+    bool update_successful = 1;
+}
+
+message DeliveryStatusRequest {
+    string assigned_order_id = 1;
+}
+
+message DeliveryStatusResponse {
+    string assigned_order_id = 1;
+    string delivery_status = 2;
+}
+
+message DriverRequest {
+    string driver_id = 1;
+}
+
+message DriverDeliveriesResponse {
+    repeated DeliveryInfo deliveries = 1;
+}
+
+message DeliveryInfo {
+    string order_id = 1;
+    string order_status = 2;
+}

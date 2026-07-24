@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package restaurant;
+
+service RestaurantService {
+    rpc GetRestaurantsMenu(RestaurantMenuRequest) returns (RestaurantMenuResponse);
+    rpc UpdateRestaurantsMenu(UpdateRestaurantMenuRequest) returns (UpdateRestaurantMenuResponse);
+    rpc OrderAcceptanceStatus(OrderDecisionStatusRequest) returns (OrderDecisionStatusResponse);
+}
+
+message RestaurantMenuRequest {
+    string restaurant_unique_id = 1;
+}
+
+message UpdateRestaurantMenuRequest {
+    string restaurant_unique_id = 1;
+    repeated MenuListing updated_menu_items = 2;
+}
+
+message OrderDecisionStatusRequest {
+    string order_tracking_id = 1;
+    bool is_accepted = 2;
+}
+
+message RestaurantMenuResponse {
+    string restaurant_unique_id = 1;
+    repeated MenuListing available_menu_items = 2;
+}
+
+message UpdateRestaurantMenuResponse {
+    bool update_successful = 1;
+}
+
+message OrderDecisionStatusResponse {
+    bool decision_confirmed = 1;
+}
+
+message MenuListing {
+    string dish_name = 1;
+    string dish_description = 2;
+    float dish_price = 3;
+}
